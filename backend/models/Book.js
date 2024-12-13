@@ -9,16 +9,16 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String,
+    required: true
+  },
   genre: {
     type: String,
     required: true
   },
   publishDate: {
     type: Date,
-    required: true
-  },
-  description: {
-    type: String,
     required: true
   },
   coverImage: {
@@ -31,8 +31,7 @@ const bookSchema = new mongoose.Schema({
   },
   borrowedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    default: null
+    ref: 'User'
   }
 }, {
   timestamps: true

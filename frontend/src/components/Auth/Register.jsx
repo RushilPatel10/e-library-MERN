@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, TextField, Button, Typography, Container, Alert } from '@mui/material';
-import axios from 'axios';
+import api from '../../utils/axios';
+import { useAuth } from '../../context/AuthContext';
 
 function Register() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
   const [error, setError] = useState('');
 
@@ -21,12 +24,27 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
-      localStorage.setItem('token', response.data.token);
-      navigate('/');
+      const response = await api.post('/auth/register', {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        await login(formData.email, formData.password);
+        navigate('/');
+      }
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred');
+      setError(err.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -78,6 +96,17 @@ function Register() {
             id="password"
             autoComplete="new-password"
             value={formData.password}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            id="confirmPassword"
+            value={formData.confirmPassword}
             onChange={handleChange}
           />
           <Button

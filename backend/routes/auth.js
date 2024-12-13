@@ -5,7 +5,9 @@ const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const User = require('../models/User');
 
-// Register User
+// @route   POST api/auth/register
+// @desc    Register user
+// @access  Public
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -27,16 +29,17 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
-    // Save user
+    // Save user to database
     await user.save();
 
-    // Create token
+    // Create JWT payload
     const payload = {
       user: {
         id: user.id
       }
     };
 
+    // Sign token
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
@@ -48,11 +51,13 @@ router.post('/register', async (req, res) => {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Login User
+// @route   POST api/auth/login
+// @desc    Authenticate user & get token
+// @access  Public
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -63,19 +68,20 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Verify password
+    // Validate password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Create token
+    // Create JWT payload
     const payload = {
       user: {
         id: user.id
       }
     };
 
+    // Sign token
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
@@ -87,24 +93,20 @@ router.post('/login', async (req, res) => {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
 // @route   GET api/auth/me
-// @desc    Get current user
+// @desc    Get logged in user
 // @access  Private
 router.get('/me', auth, async (req, res) => {
   try {
-    // req.user.id comes from the auth middleware
     const user = await User.findById(req.user.id).select('-password');
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
