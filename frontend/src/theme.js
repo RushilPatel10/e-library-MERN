@@ -23,7 +23,6 @@ const theme = createTheme({
       primary: '#ffffff',
       secondary: 'rgba(255, 255, 255, 0.7)',
     },
-    divider: 'rgba(159, 122, 234, 0.12)',
   },
   typography: {
     fontFamily: '"Playfair Display", "Roboto", "Helvetica", "Arial", sans-serif',
@@ -42,28 +41,17 @@ const theme = createTheme({
       WebkitTextFillColor: 'transparent',
     },
   },
-  shape: {
-    borderRadius: 8,
-  },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          background: 'linear-gradient(135deg, #12071f 0%, #1a0f2e 100%)',
-          minHeight: '100vh',
-        },
-      },
-    },
     MuiCard: {
       styleOverrides: {
         root: {
           background: 'linear-gradient(135deg, #1a0f2e 0%, #2d1f4f 100%)',
-          borderRadius: 12,
+          borderRadius: 16,
           border: '1px solid rgba(159, 122, 234, 0.12)',
           transition: 'all 0.3s ease-in-out',
           '&:hover': {
-            transform: 'translateY(-5px)',
-            boxShadow: '0 8px 20px rgba(159, 122, 234, 0.2)',
+            transform: 'translateY(-8px)',
+            boxShadow: '0 12px 24px rgba(159, 122, 234, 0.2)',
             border: '1px solid rgba(159, 122, 234, 0.3)',
           },
         },
@@ -76,7 +64,7 @@ const theme = createTheme({
           textTransform: 'none',
           fontWeight: 600,
           letterSpacing: '0.05em',
-          padding: '8px 16px',
+          padding: '10px 20px',
           transition: 'all 0.3s ease-in-out',
           '&:hover': {
             transform: 'translateY(-2px)',
@@ -94,7 +82,7 @@ const theme = createTheme({
           borderColor: '#9f7aea',
           color: '#9f7aea',
           '&:hover': {
-            borderColor: '#9f7aea',
+            borderColor: '#b794f4',
             background: 'rgba(159, 122, 234, 0.1)',
           },
         },
@@ -105,6 +93,8 @@ const theme = createTheme({
         root: {
           '& .MuiOutlinedInput-root': {
             borderRadius: 8,
+            background: 'rgba(26, 15, 46, 0.6)',
+            backdropFilter: 'blur(8px)',
             '& fieldset': {
               borderColor: 'rgba(159, 122, 234, 0.3)',
             },
