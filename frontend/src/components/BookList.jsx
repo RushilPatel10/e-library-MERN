@@ -49,6 +49,7 @@ function BookList() {
   const { user } = useAuth();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchBooks();
@@ -64,7 +65,7 @@ function BookList() {
 
   const fetchBooks = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       const params = new URLSearchParams();
       
       if (filter.genre !== 'All') {
@@ -75,12 +76,12 @@ function BookList() {
         params.append('search', filter.search.trim());
       }
 
-      const response = await axios.get(`http://localhost:5000/api/books?${params.toString()}`);
+      const response = await axios.get(`https://e-library-mern-backend.onrender.com/api/books?${params.toString()}`);
       setBooks(response.data);
     } catch (error) {
       console.error('Error fetching books:', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -160,7 +161,7 @@ function BookList() {
         />
       </Box>
 
-      {loading ? (
+      {isLoading ? (
         <Typography>Loading...</Typography>
       ) : books.length === 0 ? (
         <Typography>No books found</Typography>

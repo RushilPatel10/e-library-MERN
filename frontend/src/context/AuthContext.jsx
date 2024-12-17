@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
     if (token) {
       try {
         axios.defaults.headers.common['x-auth-token'] = token;
-        const res = await axios.get('http://localhost:5000/api/auth/me');
+        const res = await axios.get('https://e-library-mern-backend.onrender.com/api/auth/me');
         setUser(res.data);
       } catch (err) {
         localStorage.removeItem('token');
@@ -28,18 +28,19 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const res = await axios.post('https://e-library-mern-backend.onrender.com/api/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
       axios.defaults.headers.common['x-auth-token'] = res.data.token;
       await checkAuth();
     } catch (err) {
-      throw err.response?.data?.message || 'Login failed';
+      console.error('Login error:', err);
+      throw err.response?.data?.message || 'Login failed. Please check your connection and try again.';
     }
   };
 
   const register = async (formData) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', formData);
+      const res = await axios.post('https://e-library-mern-backend.onrender.com/api/auth/register', formData);
       localStorage.setItem('token', res.data.token);
       axios.defaults.headers.common['x-auth-token'] = res.data.token;
       await checkAuth();

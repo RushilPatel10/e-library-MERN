@@ -43,7 +43,7 @@ function EditBook() {
 
   const fetchBook = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/books/${id}`);
+      const response = await axios.get(`https://e-library-mern-backend.onrender.com/api/books/${id}`);
       const book = response.data;
       setFormData({
         title: book.title,
@@ -69,7 +69,7 @@ function EditBook() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/books/${id}`, formData, {
+      await axios.put(`https://e-library-mern-backend.onrender.com/api/books/${id}`, formData, {
         headers: {
           'x-auth-token': token
         }

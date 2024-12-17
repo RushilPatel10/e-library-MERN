@@ -11,7 +11,7 @@ connectDB();
 
 // CORS Configuration
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['https://e-library-mern-frontend.onrender.com', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'x-auth-token'],
   credentials: true
