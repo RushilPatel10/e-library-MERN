@@ -112,7 +112,7 @@ function BookList() {
   const handleDeleteConfirm = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/books/${bookToDelete._id}`, {
+      await axios.delete(`https://e-library-mern-backend.onrender.com/api/books/${bookToDelete._id}`, {
         headers: {
           'x-auth-token': token
         }

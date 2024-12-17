@@ -20,7 +20,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import api from '../utils/axios';
 
 function BookDetail() {
   const { id } = useParams();
@@ -37,7 +37,7 @@ function BookDetail() {
 
   const fetchBook = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/books/${id}`);
+      const response = await api.get(`/books/${id}`);
       setBook(response.data);
     } catch (err) {
       setError('Error fetching book details');
@@ -48,12 +48,7 @@ function BookDetail() {
 
   const handleDelete = async () => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/books/${id}`, {
-        headers: {
-          'x-auth-token': token
-        }
-      });
+      await api.delete(`/books/${id}`);
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Error deleting book');
